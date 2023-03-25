@@ -37,7 +37,7 @@ namespace BookStore.API.Repository
         }
 
         public async Task<int> AddBookAsync(BookModel bookModel)
-        {
+        {//converting data from BookModel to Book
             var book = new Books()
             {
                 Title = bookModel.Title,
@@ -46,6 +46,16 @@ namespace BookStore.API.Repository
             _context.Books.Add(book);
            await _context.SaveChangesAsync();
             return book.Id;
+        }
+        public async Task UpdateBookAsync(int bookId, BookModel bookModel)
+        {
+            var book = await _context.Books.FindAsync(bookId);
+            if(book != null)
+            {
+                book.Title = bookModel.Title;
+                book.Description = bookModel.Description;
+               await  _context.SaveChangesAsync();
+            }
         }
     }
 }
